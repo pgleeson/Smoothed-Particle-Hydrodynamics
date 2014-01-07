@@ -131,12 +131,15 @@ double owPhysicsFluidSimulator::simulationStep(const bool load_to)
 		//for(int i=0;i<MUSCLE_COUNT;i++) { muscle_activation_signal_cpp[i] *= 0.9f; }
 
         //mv
+		/* switched off
         vector<float> muscle_vector = simulation.run();
         for(int i=0; i<MUSCLE_COUNT; i++){
         	for (long index = 0; index < muscle_vector.size(); index++){
-        		muscle_activation_signal_cpp[index] = muscle_vector[index];
+        		//muscle_activation_signal_cpp[index] = muscle_vector[index];
+				//for muscle contraction force test I switch off muscle_activation_signal values 
+				//coming from Python script, but leave its code here for probable future purposes
         	}
-        }
+        }*/
 
 		ocl_solver->updateMuscleActivityData(muscle_activation_signal_cpp);
 		return helper->get_elapsedTime();

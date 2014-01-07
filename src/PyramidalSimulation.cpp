@@ -77,6 +77,7 @@ vector<float> PyramidalSimulation::run(){
   // Call a method of the class
 //	  pValue = PyObject_CallMethod(pInstance, "rrun
 //	  un", NULL);
+
 	printf("!!!checkpoint001!!!\n");
   pValue = PyObject_CallMethod(pInstance, "run", NULL);
 printf("!!!checkpoint002!!!\n");
@@ -98,4 +99,5 @@ printf("!!!checkpoint002!!!\n");
 	  return single_element_array;
   }
    printf("!!!checkpoint005!!!\n");
+
 };

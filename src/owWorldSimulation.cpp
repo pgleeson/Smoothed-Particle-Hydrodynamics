@@ -151,8 +151,25 @@ void display(void)
 				glColor4f(   0,   0,   0,  1.0f);// color of elastic particles
 				glPointSize(6.f);
 			}
+
+			if((p_cpp[i*4+3]>2.25)&&(p_cpp[i*4+3]<2.35)) 
+			{
+				//glColor4f(   100,   0,   100,  1.0f);
+				//glPointSize(12.f);
+				//glColor3f(0.0f, 0.5f, 0.5f);
+				//GLUquadricObj* m_qObj = gluNewQuadric();
+				//gluSphere(m_qObj, 0.1f, 8, 8);
+				//glutWireSphere(0.1f,8,8);
+				FILE *fout;
+				if(iterationCount>=2000) muscle_activation_signal_cpp[0]=1.f;
+				if(iterationCount==1) fout = fopen("midpoint.txt","wt");
+				else fout = fopen("midpoint.txt","a+");
+				fprintf(fout,"%d\t%f\t%f\t\n",iterationCount,muscle_activation_signal_cpp[0],p_cpp[i*4+0]-XMAX/2);
+				fclose(fout);
+			}
+
 			glVertex3f( (p_cpp[i*4]-XMAX/2)*sc , (p_cpp[i*4+1]-YMAX/2)*sc, (p_cpp[i*4+2]-ZMAX/2)*sc );
-			glPointSize(3.f);
+			//glPointSize(3.f);
 			glEnd();
 
 			if(!(	(p_cpp[i*4  ]>=0)&&(p_cpp[i*4  ]<=XMAX)&&
@@ -505,21 +522,32 @@ void renderInfo(int x, int y)
 	int i_shift = 0;
 	if(showInfo){
 		glColor3f (0.5F, 1.0F, 1.0F);
-		sprintf(label,"Liquid particles: %d, elastic matter particles: %d, boundary particles: %d; total count: %d", numOfLiquidP,
+		sprintf(label," Liquid particles: %d, elastic matter particles: %d, boundary particles: %d; total count: %d", numOfLiquidP,
 																													 numOfElasticP,
 																													 numOfBoundaryP,PARTICLE_COUNT); 
 		glPrint( 0 , 2 , label, m_font);
 		glColor3f (1.0F, 1.0F, 1.0F); 
-		sprintf(label,"Selected device: %s FPS = %.2f, time step: %d (%f s)", device_full_name+7, fps, iterationCount,((float)iterationCount)*timeStep); 
+		sprintf(label," Selected device: %s FPS = %.2f, time step: %d (%f s)", device_full_name+7, fps, iterationCount,((float)iterationCount)*timeStep); 
 		glPrint( 0 , 17 , label, m_font);
 
 
-		sprintf(label,"Muscle activation signals:          // demo: use keys '1' to '9' to activate/deactivate first nine muscles in array ");
+		sprintf(label," Muscle activation signals:          // demo: use keys '1' to '9' to activate/deactivate first nine muscles in array ");
 //		glRasterPos2f (0.01F, 0.05F); 
 		glPrint( 0 , 32 , label, m_font);
 
 		i_shift = 0;
-		sprintf(label,"MDR: %.2f[01] %.2f[03] %.2f[05] %.2f[07] %.2f[09] %.2f[11] %.2f[13] %.2f[15] %.2f[17] %.2f[19] %.2f[21] %.2f[23] indexes: +0",
+		sprintf(label," %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f",
+			muscle_activation_signal_cpp[ 0+i_shift],
+			muscle_activation_signal_cpp[ 1+i_shift],
+			muscle_activation_signal_cpp[ 2+i_shift],
+			muscle_activation_signal_cpp[ 3+i_shift],
+			muscle_activation_signal_cpp[ 4+i_shift],
+			muscle_activation_signal_cpp[ 5+i_shift],
+			muscle_activation_signal_cpp[ 6+i_shift],
+			muscle_activation_signal_cpp[ 7+i_shift],
+			muscle_activation_signal_cpp[ 8+i_shift]); 
+		glPrint( 0 , 45 , label, m_font);
+		/*sprintf(label,"MDR: %.2f[01] %.2f[03] %.2f[05] %.2f[07] %.2f[09] %.2f[11] %.2f[13] %.2f[15] %.2f[17] %.2f[19] %.2f[21] %.2f[23] indexes: +0",
 			muscle_activation_signal_cpp[ 0+i_shift],
 			muscle_activation_signal_cpp[ 2+i_shift],
 			muscle_activation_signal_cpp[ 4+i_shift],
@@ -636,7 +664,7 @@ void renderInfo(int x, int y)
 			muscle_activation_signal_cpp[19+i_shift],
 			muscle_activation_signal_cpp[21+i_shift],
 			muscle_activation_signal_cpp[23+i_shift]);
-		glPrint( 0 , 119+15+12 , label, m_font);
+		glPrint( 0 , 119+15+12 , label, m_font);*/
 
 		y_m = 40;
 	}
@@ -976,7 +1004,7 @@ void run(int argc, char** argv, const bool with_graphics, const bool load_to)
 		glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
 		glutInitWindowSize(1024, 1024);
 		glutInitWindowPosition(100, 100);
-		winIdMain = glutCreateWindow("Palyanov Andrey for OpenWorm: OpenCL PCISPH fluid + elastic matter + membranes [2013]: C.elegans body generator demo");
+		winIdMain = glutCreateWindow("Palyanov Andrey for OpenWorm (Jan 2014) >> SIBERNETIC engine [PCISPH liquid, elastic matter, membranes etc] >> Muscle contraction force test");
 		glutIdleFunc (idle); 
 		glEnable(GL_LIGHTING);
 		glEnable(GL_LIGHT0);

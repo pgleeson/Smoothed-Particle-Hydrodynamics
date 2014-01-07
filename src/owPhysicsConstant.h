@@ -32,9 +32,9 @@ const float r0 = 0.5f * h; // distance between two boundary particle == equilibr
 #define XMIN 0
 #define XMAX 30.0*h // horizontal 1
 #define YMIN 0
-#define YMAX 20.0*h // vertical
+#define YMAX 15.0*h // vertical
 #define ZMIN 0
-#define ZMAX 250.0*h // horizontal 2 //142
+#define ZMAX 30.0*h // horizontal 2 //142
 
 //const float h_fall = simulationScale*(YMAX-YMIN)*0.454f;
 
@@ -70,7 +70,7 @@ const double Wpoly6Coefficient = 315.0 / ( 64.0 * M_PI * pow( (double)(h*simulat
 const double gradWspikyCoefficient= -45.0 / ( M_PI * pow( (double)(h*simulationScale), 6.0 ) );
 const double del2WviscosityCoefficient = - gradWspikyCoefficient;
 const float gravity_x = 0.0f;
-const float gravity_y = -9.8f;
+const float gravity_y = -9.8f*0;
 const float gravity_z = 0.0f;
 extern const float delta;
 const int maxIteration = 3;
