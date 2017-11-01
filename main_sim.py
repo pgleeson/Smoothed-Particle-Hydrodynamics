@@ -122,7 +122,7 @@ class MuscleSimulation():
     
 class C302NRNSimulation():
 
-    max_ca = 4e-7
+    max_ca = 1.2e-7
     max_ca_found = -1
     
     def __init__(self, tstop=100, dt=0.005, activity_file=None, verbose=True):

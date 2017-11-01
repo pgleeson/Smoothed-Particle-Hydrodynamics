@@ -253,6 +253,7 @@ int update_worm_motion_log_file(int iterationCount, float *ec_cpp /*getElasticCo
 	}
 
 	//fprintf(f_motion_log,"%e\tX:\t",(float)iterationCount*timeStep);
+	wormMotionLogFile << std::scientific;
 	wormMotionLogFile << (float)iterationCount*timeStep << "\tX:\t";
 	
 		for(i=0;i<config->numOfElasticP;i++)
@@ -404,23 +405,34 @@ double owPhysicsFluidSimulator::simulationStep(const bool load_to) {
   }
   if (owVtkExport::isActive) {
     if (iterationCount % config->getLogStep() == 0) {
-      getvelocity_cpp();
+      getVelocity_cpp();
       owVtkExport::exportState(iterationCount, config, position_cpp,
                                elasticConnectionsData_cpp, velocity_cpp,
                                membraneData_cpp, muscle_activation_signal_cpp);
     }
  }
 
-  float correction_coeff;
-
-  for (unsigned int i = 0; i < config->MUSCLE_COUNT; ++i) {
-    correction_coeff = sqrt(
-        1.f - ((1 + i % 24 - 12.5f) / 12.5f) * ((1 + i % 24 - 12.5f) / 12.5f));
-    // printf("\n%d\t%d\t%f\n",i,1+i%24,correction_coeff);
-    muscle_activation_signal_cpp[i] *= correction_coeff;
-  }
-  
   config->updateNeuronSimulation(muscle_activation_signal_cpp);
+/* // signal correction switched off
+  float correction_coeff;
+  
+  for (unsigned int i = 0; i < config->MUSCLE_COUNT; ++i) {
+    //correction_coeff = sqrt( 1.f - ((1 + i % 24 - 12.5f) / 12.5f) * ((1 + i % 24 - 12.5f) / 12.5f));
+    // printf("\n%d\t%d\t%f\n",i,1+i%24,correction_coeff);
+    //muscle_activation_signal_cpp[i] *= correction_coeff;
+	  muscle_activation_signal_cpp[i] *= muscle_activation_signal_cpp[i];
+	  muscle_activation_signal_cpp[i] *= 1.0f*(1.f-0.4f*(i%24)/24.f);
+  }
+*/
+
+  /* //smooth start switched off
+	if(iterationCount<5000) 
+	{
+		for(int i=0;i<config->MUSCLE_COUNT;i++) 
+		{ 
+			muscle_activation_signal_cpp[i] *= (float)iterationCount/5000.f;
+		}
+	}*/
 
 
   if (iterationCount % config->getLogStep() == 0) {
@@ -438,7 +450,7 @@ double owPhysicsFluidSimulator::simulationStep(const bool load_to) {
  *  @param fileName - name of file where saved configuration will be stored
  */
 void owPhysicsFluidSimulator::makeSnapshot() {
-  getvelocity_cpp();
+  getVelocity_cpp();
   std::string fileName = config->getSnapshotFileName();
   owHelper::loadConfigurationToFile(
       position_cpp, velocity_cpp, elasticConnectionsData_cpp, membraneData_cpp,

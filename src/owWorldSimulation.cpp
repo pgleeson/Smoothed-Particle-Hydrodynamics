@@ -150,7 +150,7 @@ void display(void) {
         p_cpp = fluid_simulation->getPosition_cpp();
         d_cpp = fluid_simulation->getDensity_cpp();
         ec_cpp = fluid_simulation->getElasticConnectionsData_cpp();
-        v_cpp = fluid_simulation->getvelocity_cpp();
+        v_cpp = fluid_simulation->getVelocity_cpp();
         if (!load_from_file)
           md_cpp = fluid_simulation->getMembraneData_cpp();
       } catch (std::runtime_error &ex) {
