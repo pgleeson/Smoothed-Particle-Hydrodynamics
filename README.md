@@ -277,15 +277,16 @@ correctly installed, the following should be sufficient to get this running:
 Run with c302
 ---------------------------------
 
-You can run Sibernetic with [c302](https://github.com/openworm/CElegansNeuroML/blob/master/CElegans/pythonScripts/c302/README.md) 
+You can run Sibernetic with [c302](https://github.com/openworm/c302.git) 
 providing the input which will drive the contraction of the muscle cells.
 
 If you have Sibernetic, [NEURON (with Python support)](http://neuralensemble.org/docs/PyNN/installation.html#installing-neuron) 
 and [pyNeuroML](https://github.com/NeuroML/pyNeuroML) correctly installed, the following should be sufficient to get this running:
 
-    git clone https://github.com/openworm/CElegansNeuroML.git
-    export C302_HOME=./CElegansNeuroML/CElegans/pythonScripts/c302
-    export PYTHONPATH=$PYTHONPATH:$C302_HOME:./src
+    git clone https://github.com/openworm/c302.git
+    cd c302
+    python setup.py install
+    cd ..
     python sibernetic_c302.py
 
 This will generate the NEURON code for the c302 simulation (using pyNeuroML), run Sibernetic with the neuronal simulation of c302 running in 
