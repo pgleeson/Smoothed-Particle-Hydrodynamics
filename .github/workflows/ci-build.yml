@@ -50,6 +50,8 @@ jobs:
       run: |
 
         sudo apt install -y python3.7-dev freeglut3-dev libglu1-mesa-dev
+        sudo apt info libc-bin -a
+        sudo apt install -y libc-bin=2.27-3ubuntu1.5
         python -V
         ls -alt
         make clean
